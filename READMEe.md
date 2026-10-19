@@ -1,8 +1,3 @@
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" style="height:64px;margin-right:32px"/>
-
-# Write a readme markdown code block to copy easy
-
-````markdown
 # Universal Modder Ecosystem — GitHub Pages
 
 A searchable, filterable catalog of everything that can be used alongside  
@@ -16,7 +11,7 @@ After deployment:
 
 ```text
 https://<your-username>.github.io/
-````
+```
 
 
 ## Features
