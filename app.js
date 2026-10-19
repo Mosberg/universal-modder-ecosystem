@@ -14,10 +14,18 @@
   const resultCount = document.getElementById("result-count");
   const emptyState = document.getElementById("empty-state");
 
-  const uniqueSorted = (values) => [...new Set(values)].sort((a, b) => a.localeCompare(b));
+  const uniqueSorted = (values) =>
+    [...new Set(values)].sort((a, b) => a.localeCompare(b));
 
-  const categories = ["All", ...uniqueSorted(ECOSYSTEM_DATA.map((tool) => tool.category))];
-  const platforms = ["All", ...uniqueSorted(ECOSYSTEM_DATA.flatMap((tool) => tool.platform))];
+  const categories = [
+    "All",
+    ...uniqueSorted(ECOSYSTEM_DATA.map((tool) => tool.category))
+  ];
+
+  const platforms = [
+    "All",
+    ...uniqueSorted(ECOSYSTEM_DATA.flatMap((tool) => tool.platform))
+  ];
 
   const createChip = (label, group) => {
     const button = document.createElement("button");
@@ -41,6 +49,7 @@
     categoryChips.replaceChildren(
       ...categories.map((label) => createChip(label, "category"))
     );
+
     platformChips.replaceChildren(
       ...platforms.map((label) => createChip(label, "platform"))
     );
@@ -53,27 +62,71 @@
   };
 
   const matchesTool = (tool) => {
-    const search = state.search.trim().toLowerCase();
+    const query = state.search.trim().toLowerCase();
+
     const categoryMatch =
       state.category === "All" || tool.category === state.category;
+
     const platformMatch =
       state.platform === "All" || tool.platform.includes(state.platform);
 
     if (!categoryMatch || !platformMatch) return false;
-    if (!search) return true;
+    if (!query) return true;
 
     const haystack = [
       tool.name,
       tool.category,
       tool.description,
       tool.status,
+      tool.install,
+      tool.notes || "",
       ...tool.tags,
-      ...tool.platform
+      ...tool.platform,
+      ...(tool.usage || [])
     ]
       .join(" ")
       .toLowerCase();
 
-    return haystack.includes(search);
+    return haystack.includes(query);
+  };
+
+  const createCommandBlock = (title, command) => {
+    const block = document.createElement("div");
+    block.className = "command-block compact";
+
+    const head = document.createElement("div");
+    head.className = "command-head";
+
+    const label = document.createElement("span");
+    label.textContent = title;
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "copy-btn";
+    button.textContent = "Copy";
+
+    const pre = document.createElement("pre");
+    const code = document.createElement("code");
+    code.textContent = command;
+    pre.append(code);
+
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(command);
+        button.textContent = "Copied!";
+      } catch {
+        button.textContent = "Press Ctrl+C";
+      }
+
+      setTimeout(() => {
+        button.textContent = "Copy";
+      }, 1400);
+    });
+
+    head.append(label, button);
+    block.append(head, pre);
+
+    return block;
   };
 
   const createToolCard = (tool) => {
@@ -93,13 +146,12 @@
     const statusTag = document.createElement("span");
     statusTag.className = `tag ${tool.status}`;
     statusTag.textContent = statusLabel(tool.status);
-    tags.append(statusTag);
 
     const categoryTag = document.createElement("span");
     categoryTag.className = "tag";
     categoryTag.textContent = tool.category;
-    tags.append(categoryTag);
 
+    tags.append(statusTag, categoryTag);
     top.append(title, tags);
 
     const description = document.createElement("p");
@@ -108,6 +160,7 @@
 
     const platformTags = document.createElement("div");
     platformTags.className = "tag-row";
+
     tool.platform.forEach((platform) => {
       const tag = document.createElement("span");
       tag.className = "tag";
@@ -129,6 +182,25 @@
     });
 
     card.append(top, description, platformTags, links);
+
+    if (tool.install) {
+      card.append(createCommandBlock("Install / setup", tool.install));
+    }
+
+    if (tool.usage?.length) {
+      card.append(
+        createCommandBlock("Usage / commands", tool.usage.join("
+"))
+      );
+    }
+
+    if (tool.notes) {
+      const notes = document.createElement("p");
+      notes.className = "tool-notes";
+      notes.textContent = tool.notes;
+      card.append(notes);
+    }
+
     return card;
   };
 
@@ -151,31 +223,11 @@
 
     document
       .querySelectorAll(`.chip[data-group="${group}"]`)
-      .forEach((item) => item.classList.toggle("active", item === chip));
+      .forEach((item) => {
+        item.classList.toggle("active", item === chip);
+      });
 
     renderTools();
-  };
-
-  const copyText = async (text, button) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      const original = button.textContent;
-      button.textContent = "Copied!";
-      setTimeout(() => {
-        button.textContent = original;
-      }, 1400);
-    } catch {
-      button.textContent = "Press Ctrl+C";
-    }
-  };
-
-  const bindCopyButtons = () => {
-    document.querySelectorAll(".copy-btn").forEach((button) => {
-      button.addEventListener("click", () => {
-        const target = document.getElementById(button.dataset.copyTarget);
-        if (target) copyText(target.innerText, button);
-      });
-    });
   };
 
   searchInput.addEventListener("input", () => {
@@ -188,5 +240,4 @@
 
   renderChips();
   renderTools();
-  bindCopyButtons();
 })();
