@@ -362,3 +362,30 @@ pre {
     justify-content: center;
   }
 }
+
+.command-block.compact {
+  margin-top: 0.25rem;
+  border-radius: 8px;
+}
+
+.command-block.compact .command-head {
+  padding: 0.45rem 0.65rem;
+  font-size: 0.78rem;
+}
+
+.command-block.compact pre {
+  padding: 0.7rem 0.8rem;
+  font-size: 0.82rem;
+  max-height: 220px;
+  overflow: auto;
+}
+
+.tool-notes {
+  margin: 0;
+  padding: 0.65rem 0.75rem;
+  border-left: 3px solid var(--warning);
+  background: rgba(251, 191, 36, 0.08);
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
