@@ -9,9 +9,7 @@ It covers required dependencies, recommended tools, AI coding agents, MCP servic
 
 After deployment:
 
-```text
-https://<your-username>.github.io/
-```
+https://mosberg.github.io/universal-modder-ecosystem/
 
 
 ## Features
