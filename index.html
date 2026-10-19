@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Universal Modder Ecosystem</title>
+  <meta name="description" content="A curated catalog of dependencies, AI agents, tools, services, and workflows for Universal Modder Unrestricted.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <p class="eyebrow">GitHub Pages</p>
+      <h1>Universal Modder Ecosystem</h1>
+      <p class="lead">
+        Everything that can be used alongside
+        <a href="https://github.com/AhmedTahaAtiya/universal-modder-unrestricted" target="_blank" rel="noopener">
+          universal-modder-unrestricted
+        </a>
+        — dependencies, AI agents, MCP services, local generation, reverse engineering, assets, capture, and publishing.
+      </p>
+
+      <div class="header-actions">
+        <a class="btn btn-primary" href="#catalog">Browse tools</a>
+        <a class="btn" href="#setup">Setup commands</a>
+        <a class="btn" href="https://github.com/AhmedTahaAtiya/universal-modder-unrestricted" target="_blank" rel="noopener">
+          View repository
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="setup" class="panel">
+      <h2>Core setup</h2>
+      <p>
+        Install the required foundation first. <strong>uv</strong> is recommended because it installs
+        the <code>um</code> CLI and its Python dependencies in an isolated environment.
+      </p>
+
+      <div class="command-block">
+        <div class="command-head">
+          <span>Windows PowerShell — prerequisites</span>
+          <button class="copy-btn" data-copy-target="cmd-prereqs">Copy</button>
+        </div>
+        <pre id="cmd-prereqs"><code>winget install --id Git.Git -e --source winget
+winget install --id Python.Python.3.12 -e --source winget
+winget install --id Gyan.FFmpeg -e --source winget
+winget install --id astral-sh.uv -e --source winget</code></pre>
+      </div>
+
+      <div class="command-block">
+        <div class="command-head">
+          <span>Install Universal Modder Unrestricted</span>
+          <button class="copy-btn" data-copy-target="cmd-install">Copy</button>
+        </div>
+        <pre id="cmd-install"><code>git clone https://github.com/AhmedTahaAtiya/universal-modder-unrestricted.git
+cd universal-modder-unrestricted
+uv tool install --force git+https://github.com/AhmedTahaAtiya/universal-modder-unrestricted
+um --help</code></pre>
+      </div>
+
+      <div class="callout">
+        <strong>Required:</strong> Git, Python 3.10+, FFmpeg.<br>
+        <strong>Recommended:</strong> uv.<br>
+        <strong>Optional:</strong> Blender for 3D-to-sprite rendering, fal for hosted generative assets, and ComfyUI for local image generation.
+      </div>
+    </section>
+
+    <section id="catalog" class="panel">
+      <h2>Compatibility catalog</h2>
+
+      <div class="filters">
+        <label class="search-label">
+          <span class="visually-hidden">Search tools</span>
+          <input id="search" type="search" placeholder="Search tools, agents, formats, or workflows..." autocomplete="off">
+        </label>
+
+        <div class="chip-row" id="category-chips" role="group" aria-label="Filter by category"></div>
+        <div class="chip-row" id="platform-chips" role="group" aria-label="Filter by platform"></div>
+      </div>
+
+      <p id="result-count" class="result-count" aria-live="polite"></p>
+      <div id="tool-grid" class="tool-grid"></div>
+      <p id="empty-state" class="empty-state hidden">No tools match the current filters.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Recommended workflow</h2>
+      <ol class="workflow">
+        <li><strong>Scan the game:</strong> use <code>um scan</code> to identify likely engine, formats, executable, and modding route.</li>
+        <li><strong>Check prior work:</strong> run <code>um kb search "&lt;game or engine&gt;"</code> before reverse engineering.</li>
+        <li><strong>Inspect and modify:</strong> use Ghidra, x64dbg, Cheat Engine, HxD, Resource Hacker, or engine-specific tools as appropriate.</li>
+        <li><strong>Generate assets:</strong> use fal MCP for hosted generation or ComfyUI for local images.</li>
+        <li><strong>Prepare art:</strong> use Aseprite, Krita, GIMP, TexturePacker, or Blender depending on the asset type.</li>
+        <li><strong>Test in game:</strong> use the game itself, OBS for capture, and <code>um win</code> for Windows automation.</li>
+        <li><strong>Document results:</strong> let the agent write a knowledge-base field note with versions, route, verification, and gotchas.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        Built for the Universal Modder ecosystem. Always mod only games you legally own and respect each game’s terms of service, licenses, and platform rules.
+      </p>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
